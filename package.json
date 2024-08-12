@@ -3,24 +3,24 @@
 	"version": "1.0.0",
 	"description": "A higher-order component for showing tooltips on focused components in React Native.",
 	"main": "index.js",
-  "type": "module",
+	"type": "module",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Udbhav9628/react-native-highlight-tooltip.git"
+		"url": "git+https://github.com/Udbhav9628/react-native-highlight-tooltip.git"
 	},
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
-	 "keywords": [
-    "react",
-    "react-native",
-    "walkthrough",
-    "tooltip",
-    "popover"
-  ],
+	"keywords": [
+		"react",
+		"react-native",
+		"walkthrough",
+		"tooltip",
+		"popover"
+	],
 	"author": "Udbhav Vikram Singh",
 	"license": "MIT",
-  "homepage": "https://github.com/Udbhav9628/react-native-highlight-tooltip#readme",
+	"homepage": "https://github.com/Udbhav9628/react-native-highlight-tooltip#readme",
 	"dependencies": {
 		"prop-types": "^15.8.1"
 	},

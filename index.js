@@ -22,17 +22,28 @@ const index = ({
   onPressHighlight,
 }) => {
   if (customTooltip) {
-    const {width, height} = customTooltip.style;
+    const { style, component } = customTooltip;
+    const { width, height } = style;
+    if (component === undefined) {
+      throw new Error(`The component of the custom tooltip is required.`);
+    }
+    if (style === undefined) {
+      throw new Error(`The style of the custom tooltip is required.`);
+    }
+    if (height === undefined) {
+      throw new Error(`The height of the custom tooltip is required.`);
+    }
+    if (width === undefined) {
+      throw new Error(`The width of the custom tooltip is required.`);
+    }
     if (width < 60) {
       throw new Error(
         `The width of the custom tooltip cannot be less than 60. Provided width: ${width}`,
       );
     }
-    if (height === undefined) {
-      throw new Error(`The height of the custom tooltip is required.`);
-    }
   }
-  const {style, component} = customTooltip || {};
+
+  const { style, component } = customTooltip || {};
 
   const [componentPositionOnScreen, setComponentPositionOnScreen] =
     useState(null);

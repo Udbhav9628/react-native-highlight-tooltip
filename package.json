@@ -1,8 +1,9 @@
 {
 	"name": "react-native-highlight-tooltip",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A higher-order component for showing tooltips on focused components in React Native.",
 	"main": "index.js",
+	"types": "index.d.ts",
 	"type": "module",
 	"repository": {
 		"type": "git",

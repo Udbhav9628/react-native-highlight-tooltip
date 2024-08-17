@@ -1,13 +1,20 @@
+import Tooltip from './tooltip';
+import PropTypes from 'prop-types';
 import {
   View,
   Modal,
   StatusBar,
-  StyleSheet,
   TouchableOpacity,
+  Text,
+  Animated,
 } from 'react-native';
-import Tooltip from './tooltip';
-import PropTypes from 'prop-types';
-import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 const index = ({
   offset,
@@ -22,10 +29,10 @@ const index = ({
   onPressHighlight,
 }) => {
   if (customTooltip) {
-    const { style, component } = customTooltip;
-    const { width, height } = style;
-    if (component === undefined) {
-      throw new Error(`The component of the custom tooltip is required.`);
+    const {style, message} = customTooltip;
+    const {width, height} = style;
+    if (message === undefined) {
+      throw new Error(`The message of the custom tooltip is required.`);
     }
     if (style === undefined) {
       throw new Error(`The style of the custom tooltip is required.`);
@@ -43,7 +50,9 @@ const index = ({
     }
   }
 
-  const { style, component } = customTooltip || {};
+  const {style, message, textStyle} = customTooltip || {};
+
+  const opacityAnimation = useRef(new Animated.Value(0)).current;
 
   const [componentPositionOnScreen, setComponentPositionOnScreen] =
     useState(null);
@@ -54,10 +63,10 @@ const index = ({
   const measurePosition = useCallback(() => {
     if (highlightRef?.current && visible) {
       setTimeout(() => {
-        highlightRef.current.setNativeProps({
+        highlightRef?.current?.setNativeProps({
           backgroundColor: 'transparent',
         });
-        highlightRef.current.measure((x, y, width, height, pageX, pageY) => {
+        highlightRef?.current?.measure((x, y, width, height, pageX, pageY) => {
           if (
             componentPositionOnScreen?.x != pageX ||
             componentPositionOnScreen?.y != pageY ||
@@ -79,10 +88,10 @@ const index = ({
   const measurePositionAndStyle = useCallback(() => {
     if (highlightRef?.reference?.current && visible) {
       setTimeout(() => {
-        highlightRef.reference.current.setNativeProps({
+        highlightRef.reference?.current.setNativeProps({
           backgroundColor: 'transparent',
         });
-        highlightRef.reference.current.measure(
+        highlightRef.reference?.current.measure(
           (x, y, width, height, pageX, pageY) => {
             setComponentPositionOnScreen({
               x:
@@ -110,11 +119,22 @@ const index = ({
     }
   }, [highlightRef?.reference?.current, visible]);
 
+  const animateOpacity = () => {
+    opacityAnimation.setValue(0);
+    Animated.timing(opacityAnimation, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
   useEffect(() => {
+    animateOpacity();
     measurePosition();
   }, [measurePosition]);
 
   useEffect(() => {
+    animateOpacity();
     measurePositionAndStyle();
   }, [measurePositionAndStyle]);
 
@@ -260,7 +280,7 @@ const index = ({
             left: 97,
           });
           const position = {
-            top: -(component && style?.height ? style.height + 12 : 115),
+            top: -(message && style?.height ? style.height + 12 : 115),
             left: componentPositionOnScreen?.width / 2 - 110 || 0,
           };
           setToolTipPosition(position);
@@ -283,7 +303,11 @@ const index = ({
           backgroundColor={overlayColor || 'rgba(0, 0, 0, 0.5)'}
         />
         {componentPositionOnScreen ? (
-          <View style={styles.container}>
+          <View
+            style={{
+              flex: 1,
+              position: 'relative',
+            }}>
             {/* top overlay */}
             <View
               style={{
@@ -333,7 +357,7 @@ const index = ({
                 left: 0,
               }}></View>
 
-            <View
+            <Animated.View
               style={{
                 position: 'absolute',
                 top: componentPositionOnScreen?.y,
@@ -342,9 +366,10 @@ const index = ({
                 width: componentPositionOnScreen?.width,
                 backgroundColor: 'transparent',
                 zIndex: 99,
+                opacity: opacityAnimation,
               }}>
               {/* ToolTip */}
-              {component ? (
+              {message ? (
                 <View
                   style={[
                     style,
@@ -355,7 +380,13 @@ const index = ({
                       ...toolTipPosition,
                     },
                   ]}>
-                  {component}
+                  <Text
+                    style={{
+                      ...textStyle,
+                      color: textStyle?.color || 'white',
+                    }}>
+                    {message}
+                  </Text>
                   <View
                     style={{
                       ...toolTipArrowPosition,
@@ -403,7 +434,7 @@ const index = ({
                   flex: 1,
                   backgroundColor: 'transparent',
                 }}></TouchableOpacity>
-            </View>
+            </Animated.View>
           </View>
         ) : (
           <View
@@ -432,7 +463,7 @@ index.propTypes = {
     'bottom',
   ]),
   visible: PropTypes.bool.isRequired,
-  highlightRef: PropTypes.object.isRequired,
+  highlightRef: PropTypes.object,
   tooltipText: PropTypes.string,
   offset: PropTypes.number,
   arrowOffset: PropTypes.number,
@@ -457,15 +488,9 @@ index.propTypes = {
       borderRadius: PropTypes.number,
       backgroundColor: PropTypes.string,
     }).isRequired,
-    component: PropTypes.element.isRequired,
+    textStyle: PropTypes.object,
+    message: PropTypes.string,
   }),
 };
 
 export default index;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: 'relative',
-  },
-});

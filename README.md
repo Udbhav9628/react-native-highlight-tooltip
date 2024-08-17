@@ -7,6 +7,8 @@ React Native Highlight Tooltip let's you highlights specific UI components by si
   - [Installation](#installation)
   - [Screenshot](#screenshot)
   - [Example Usage](#example-usage)
+  - [Props](#props)
+  - [How it works](#how-it-works)
 
 ### Installation
 
@@ -32,7 +34,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {articles} from '../5-instagram-feed/data';
-import Highlight from 'react-native-highlight-tooltip';
+import HighlightTooltip from 'react-native-highlight-tooltip';
 import React, {useEffect, useRef, useState} from 'react';
 import Header from '../5-instagram-feed/components/Header';
 import Article from '../5-instagram-feed/components/Article';
@@ -93,7 +95,7 @@ export default function App() {
         />
       </View>
 
-      <Highlight
+      <HighlightTooltip
         tooltipText={tooltipText}
         visible={highlightVisible}
         highlightRef={highlightRef}
@@ -184,3 +186,33 @@ const styles = StyleSheet.create({
 });
 
 ```
+| Prop name        | Type             | Default value                          | Description                                                                                                                                                                                                    |
+| ---------------- | ---------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `visible` | `bool`  | `false` |Determines if the HighlightTooltip is visible. This prop is required. |
+|
+| `highlightRef` | `ref of comp`  | `null` |A reference to the component that will be highlighted. |
+|
+| `tooltipText` | `string`  | `none` |The text to be displayed in the tooltip. This will only be used if customTooltip is not provided. |
+|
+| `tooltipPosition` | `string`  | `top` |Defines the position of the tooltip relative to the highlighted component. Acceptable values include: 'topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'top', and 'bottom'. |
+|
+| `offset` | `number`  | `0` |The offset of the tooltip from its default position, useful for fine-tuning the tooltip’s location. works only with: 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'. |
+|
+| `arrowOffset` | `number`  | `0` |The offset of the arrow on the tooltip from its default position. works only with: 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'. |
+|
+| `arrowOffset` | `string`  | `rgba(0, 0, 0, 0.5)` |The color of the overlay surrounding the highlighted component. |
+|
+| `onPressHighlight` | `function`  | `null` |Callback function triggered when the highlighted component is pressed. |
+|
+| `onRequestClose` | `function`  | `null` |Callback function triggered on hardware back press when the HighlightTooltip is visible. |
+|
+| `customTooltip` | `object`  | `null` |Custom tooltip content and style. Must include style with height and width properties. The message property is required to display text. textStyle for message style. see [Example Usage](#example-usage) |
+|
+
+
+### How It Works
+
+Internally, `react-native-highlight-tooltip` leverages React's ref system to identify and measure the position and dimensions of the component you want to highlight. When a ref is passed to the `HighlightTooltip` component, it dynamically calculates the position of the tooltip relative to the highlighted component. The component overlays a semi-transparent backdrop across the screen, darkening everything except the highlighted area, which remains fully visible. The tooltip is then positioned near the highlighted component, with an arrow pointing towards it. This creates a clear visual focus on the component. The package also manages the touch and interaction behavior of the highlighted component, allowing you to control whether users can interact with it while the tooltip is displayed.
+
+### Contributing
+Contributions are welcome! If you find a bug or have a feature request, please open an issue. Feel free to fork the repository and submit a pull request. Any contributions, big or small, are appreciated and acknowledged.

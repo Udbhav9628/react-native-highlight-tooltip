@@ -17,6 +17,8 @@ npm i react-native-highlight-tooltip
 ### Screenshot
 
 
+<img height ="400" src="example.gif" />
+
 
 ### Example Usage
 

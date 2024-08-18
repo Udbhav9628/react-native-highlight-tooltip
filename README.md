@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
 | ---------------- | ---------------- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `visible` | `bool`  | `false` |Determines if the HighlightTooltip is visible. This prop is required. |
 | |
-| `highlightRef` | `ref of comp`  | `null` |A reference to the component that will be highlighted. |
+| `highlightRef` | `ref of comp`  | `null` | A reference to the component you want to highlight. Alternatively, you can pass an object like `{ reference: ref, style: { margin: 10 } }`. The `style` property allows you to add extra space around the highlighted area. accepted properties are `margin`, `marginLeft`, `marginTop`, `marginRight`, and `marginBottom`. For example, setting `margin: 10` will increase the highlighted area by 10 pixels around the component. see [Example Usage](#example-usage) |
 | |
 | `tooltipText` | `string`  | `none` |The text to be displayed in the tooltip. This will only be used if customTooltip is not provided. |
 | |
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
 | |
 | `arrowOffset` | `number`  | `0` |The offset of the arrow on the tooltip from its default position. works only with: 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'. |
 | |
-| `arrowOffset` | `string`  | `rgba(0, 0, 0, 0.5)` |The color of the overlay surrounding the highlighted component. |
+| `overlayColor` | `string`  | `rgba(0, 0, 0, 0.5)` |The color of the overlay surrounding the highlighted component. |
 | |
 | `onPressHighlight` | `function`  | `null` |Callback function triggered when the highlighted component is pressed. |
 | |

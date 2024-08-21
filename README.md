@@ -2,6 +2,8 @@
 
 React Native Highlight Tooltip let's you highlights specific UI components by simply taking a reference (ref) of the component.
 
+Please Note: This package might not work as expected with some components like `FlatList`, `SectionList`, and others due to their unique rendering behaviors. To ensure proper highlighting, wrap these components in a View and provide the reference (ref) of the `View` instead.
+
 ### Table of Contents
 
   - [Installation](#installation)
